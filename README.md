@@ -24,5 +24,16 @@ To help us to know the start/end time of each schedule, timestamps are used. One
 - Name: name of the schedule, GUID
 - Status: flag the status of the schedule
 - Created time: timestamp
-- Closed time: timestamp
+- last_modify_time: timestamp
 
+Statement to create table for schedule under MySQL:
+```sql
+CREATE TABLE `schedule` (
+  `schedule_id` int(11) NOT NULL AUTO_INCREMENT,
+  `schedule_name` varchar(36) NOT NULL,
+  `schedule_status` char(1) DEFAULT 'a',
+  `created_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_modify_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`schedule_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+```
