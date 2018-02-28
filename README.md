@@ -37,3 +37,60 @@ CREATE TABLE `schedule` (
   PRIMARY KEY (`schedule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ```
+
+Python bottle service to query the schedules from MySQL and return to client in Json:
+```python
+# -*- coding: UTF-8 -*-
+import bottle
+import json
+import mysql.connector
+import time
+from mysql.connector import errorcode
+from datetime import date, datetime, timedelta
+
+class mschedule(object):
+    def __init__(self, id, name, status, created_time, last_modified_time):
+        self.id = id
+        self.name = name
+        self.status = status
+        self.created_time = created_time
+        self.last_modified_time = last_modified_time
+    def toDict(self):
+        '''
+        Use a dictionary to hold the data and return
+        The reason is that Json module only do convertion for dictionary
+        '''
+        info = {}
+        info['id'] = self.id
+        info['name'] = self.name
+        info['status'] = self.status
+        info['created_time'] = time.mktime(self.created_time.timetuple())
+        info['last_modified_time'] = time.mktime(self.last_modified_time.timetuple())
+        return info
+
+@bottle.route('/allschedule', method = ['GET'])    
+def get_books_json():    
+    #connect to the server, doesn't specify the database to use
+    cnx = mysql.connector.connect(**config)
+
+    #get the cursor to use
+    cursor = cnx.cursor()
+    
+    #query data from table
+    query = (
+        "select schedule_id, schedule_name, schedule_status, created_time, last_modify_time from schedule"
+        )
+    cursor.execute(query)
+
+    ret_content = []
+    for (schedule_id, schedule_name, schedule_status, created_time, last_modify_time) in cursor:
+        tmp_schedule = mschedule(schedule_id, schedule_name, schedule_status, created_time, last_modify_time)
+        ret_content.append(tmp_schedule.toDict())
+            
+    #close the cursor
+    cursor.close()
+    cnx.close()
+    
+    #return str(ret_content)
+    return {"response":ret_content} 
+```
