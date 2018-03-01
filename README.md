@@ -99,7 +99,7 @@ def get_books_json():
 
 ## Python code for adding a schedule into the database
 ```python
-@bottle.route('/xxx/add/schedule', method= ['GET', 'POST'])
+@bottle.route('/xxx/schedule/add', method= ['GET', 'POST'])
 def add_execution_schedule():
     '''
     Create a new schedule, to hold the execution results
@@ -142,4 +142,43 @@ def add_execution_schedule():
         return ''
 ```
 
+## Python code for closing a schedule in the database
+```python
+@bottle.route('/xxx/schedule/close', method= ['GET', 'POST'])
+def execution_schedule_close():
+    '''
+    Close a new schedule for a client
+    1. The method should be post.
+    2. Check the token, which identifies different clients.
+    3. Close the schedule of the client.
+    
+    It is better to use stored procedure to find the most recent and then close it.
+    But to make it easier, here we just close all the schedules for the client.
+    '''    
+    #method should not be 'get'    
+    if bottle.request.method == 'GET':
+        return ''
+    
+    token = get_client_token()
 
+    if verify_client_token(token) is True:        
+        #create a record for the schedule in the database
+        cnx = mysql.connector.connect(**config)
+        cursor = cnx.cursor()
+        close_st = (
+            "update schedule "
+            "set schedule_status = 'b'"
+            "where client_token = '%s'"
+            )
+        the_token = token
+        cursor.execute(close_st%(the_token))
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+        
+        #return the name of the schedule
+        return ''
+    else:
+        #may be an attack, ignore
+        return ''
+```
