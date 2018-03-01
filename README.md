@@ -98,6 +98,13 @@ def get_books_json():
 ```
 
 ## Python code for adding a schedule into the database
+Technical point:
+- Define the method supported for the request.
+- The way to get parameter from GET/POST `bottle.request.GET.get('xxx')`
+- The way to identify the mehod used by the request.
+- The way to generate a UUID using python and change it to string.
+- The way to insert a record into MySQL using Connector/Python
+
 ```python
 @bottle.route('/xxx/schedule/add', method= ['GET', 'POST'])
 def add_execution_schedule():
@@ -143,6 +150,9 @@ def add_execution_schedule():
 ```
 
 ## Python code for closing a schedule in the database
+Technical point:
+- Definition of statement, when there is only one parameter for the SQL query.
+
 ```python
 @bottle.route('/xxx/schedule/close', method= ['GET', 'POST'])
 def execution_schedule_close():
