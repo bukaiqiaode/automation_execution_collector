@@ -15,8 +15,10 @@ To handle the exception conditions of the workflow:
 - A 'schedule' should have flag to identify status like 'created/running/closed/...'.
 - Client need to specify the 'schedule' when requesting to append an execution result.
 - Client need to 'closed' the schedule, when execution is finished.
-- Appending to a 'closed schedule' will be refused.
+- Appending to a 'closed schedule' will be ignored.
 - Administrator can help to update results for 'closed schedule'.
+- A new shedule will be created, ignoring where there is still non-closed schedule for the client, when creating request received.
+- Administrator can use seperate scripts to check unexpected condition of the system, and figure out the root-cause.
 
 To help us to know the start/end time of each schedule, timestamps are used. One timestamp is created, when creating a new schedule. One timestamp is used, when closing a schedule. Then we get the data-format of a schedule:
 
