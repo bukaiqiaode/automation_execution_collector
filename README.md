@@ -97,7 +97,7 @@ def get_books_json():
     return {"response":ret_content} 
 ```
 
-Python code for adding a schedule into the database
+## Python code for adding a schedule into the database
 ```python
 @bottle.route('/xxx/add/schedule', method= ['GET', 'POST'])
 def add_execution_schedule():
