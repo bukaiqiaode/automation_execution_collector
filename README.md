@@ -94,3 +94,48 @@ def get_books_json():
     #return str(ret_content)
     return {"response":ret_content} 
 ```
+
+Python code for adding a schedule into the database
+```python
+@bottle.route('/xxx/add/schedule', method= ['GET', 'POST'])
+def add_execution_schedule():
+    '''
+    Create a new schedule, to hold the execution results
+    1. The method should be post.
+    2. Check the token, which identifies different clients.
+    3. Generate a UUID as the name of the schedule.
+    4. Create a new schedule in the database.
+    5. Return the name of the schedule
+    '''    
+    #method should not be 'get'    
+    if bottle.request.method == 'GET':
+        return ''
+    
+    token = get_client_token()
+
+    if verify_client_token(token) is True:
+        #create the name for the schedule
+        temp_schedule_name = str(uuid.uuid1())
+        
+        #create a record for the schedule in the database
+        cnx = mysql.connector.connect(**config)
+        cursor = cnx.cursor()
+        add_st = (
+            "insert into schedule "
+            "(schedule_name, client_token)"
+            "values( %s, %s )"
+            )
+        the_name = temp_schedule_name
+        the_token = token
+        record_a = (the_name, the_token)
+        cursor.execute(add_st, record_a)
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+        
+        #return the name of the schedule
+        return the_name
+    else:
+        #may be an attack, ignore
+        return ''
+``
