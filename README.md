@@ -171,8 +171,7 @@ def execution_schedule_close():
     
     token = get_client_token()
 
-    if verify_client_token(token) is True:        
-        #create a record for the schedule in the database
+    if verify_client_token(token) is True:
         cnx = mysql.connector.connect(**config)
         cursor = cnx.cursor()
         close_st = (
@@ -191,4 +190,28 @@ def execution_schedule_close():
     else:
         #may be an attack, ignore
         return ''
+```
+
+## Python code for requesting to add/close a schedule from client
+Technical point:
+- Use request to post data.
+
+```python
+import requests
+
+def create_schedule():
+    mtoken = 'xxx'
+    
+    r = requests.post('http://a.b.c.d:port/xxx/schedule/add',
+                     data = {'xxx': mtoken}
+                     )
+    print r.content.strip()
+
+def close_schedule():
+    mtoken = 'xxx'
+    
+    r = requests.post('http://a.b.c.d:port/xxx/schedule/close',
+                     data = {'xxx': mtoken}
+                     )
+    print r.content.strip()
 ```
