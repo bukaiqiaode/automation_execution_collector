@@ -71,7 +71,7 @@ class mschedule(object):
         return info
 
 @bottle.route('/allschedule', method = ['GET'])    
-def get_books_json():    
+def all_schedules_json():    
     #connect to the server, doesn't specify the database to use
     cnx = mysql.connector.connect(**config)
 
