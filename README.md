@@ -215,3 +215,21 @@ def close_schedule():
                      )
     print r.content.strip()
 ```
+
+## Python code to verify time-format using regular expression
+```python
+  import re
+  
+  pStr = "xxxx"
+  #24-hour format
+  result = re.match( r'[012][0-9]:[012345][0-9]', pStr, re.I)
+  
+  #12-hour format
+  pattern_1 = r'[1][012]:[012345][0-9] [AP]M'
+  pattern_2 = r'[1-9]:[012345][0-9] [AP]M'
+  result_1 = re.match(pattern_1, str_val, re.I)
+  result_2 = re.match(pattern_2, str_val, re.I)
+  if result_1 or result_2:
+    pass
+  
+```
