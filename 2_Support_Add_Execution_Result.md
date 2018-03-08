@@ -72,3 +72,52 @@ END$$
 
 DELIMITER ;
 ```
+
+Then we can submit execution results from Python server
+```python
+@bottle.route('/xxx/result/add', method= ['GET', 'POST'])
+def execution_result_add():
+    '''
+    Insert one execution result for a schedule.
+    1. The method should be post.
+    2. Check the token, which identifies different clients.
+    3. process the script name to replace (`, BLANK) with t
+    4. validation the result
+    5. submit the result
+    '''    
+    #method should not be 'get'    
+    if bottle.request.method == 'GET':
+        return ''
+    
+    token = get_client_token()
+
+    if verify_client_token(token) is True:
+        #examine the parameters
+        ex_script = bottle.request.POST.get('script')
+        ex_result = bottle.request.POST.get('result')
+
+        #validate the script name
+        if '`' in ex_script or ' ' in ex_script or len(ex_script) >= 99:
+            return ""
+
+        #validate the result
+        if (ex_result.isalpha() is False) or (len(ex_result) != 1):
+            return ''
+        
+        #submit the result to database
+        cnx = mysql.connector.connect(**config)
+        cursor = cnx.cursor()
+        
+        args = (token, ex_script, ex_result)
+        cursor.callproc("addexecutionresult", args)
+        
+        cnx.commit()
+        cursor.close()
+        cnx.close()
+        
+        #return the name of the schedule
+        return 'success'
+    else:
+        #may be an attack, ignore
+        return ''
+```
