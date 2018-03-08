@@ -12,6 +12,22 @@ Below is the information we needed for an execution result record:
 - ID: primary key
 - Name: name of the test
 - Result: execution result. 'a'=Initial, 'b'=Pass, 'c'='Fail, 'd'=Block, 'e'=Error, ....
-- Schedule_id: which schedule this execution belongs to
-- Updated_time: when this record is updated
+- Schedule_id: which schedule this execution belongs to, should be existing.
+- Submitted_time: when this record is submitted. Generally it means when the execution of this test is finished.
+- Started_time: Start time of the execution. Generally it means when the test is started to run.
+
+From the above schema, we can draw the below table definition.
+```mysql
+CREATE TABLE `executions` (
+  `execution_id` int(11) NOT NULL AUTO_INCREMENT,
+  `script_name` varchar(100) NOT NULL,
+  `execution_result` char(1) NOT NULL DEFAULT 'a',
+  `schedule_id` int(11) NOT NULL,
+  `started_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `submitted_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   CONSTRAINT `executions_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE CASCADE,
+  PRIMARY KEY (`execution_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+```
 
