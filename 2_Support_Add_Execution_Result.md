@@ -32,3 +32,43 @@ CREATE TABLE `executions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ```
 
+We also need a stored-procedure to insert records of execution results.
+```mysql
+DELIMITER $$
+
+CREATE PROCEDURE `addexecutionresult`(
+    `c_token` VARCHAR(36),
+    `ex_script` VARCHAR(100),
+    `ex_result` CHAR(1)
+    )
+BEGIN 
+
+DECLARE notfound INT DEFAULT 0; 
+DECLARE s_id INT(11) DEFAULT 0; 
+DECLARE v_flag INT DEFAULT 0; 
+
+DECLARE cur1 CURSOR FOR 
+SELECT MAX(schedule_id) FROM schedule
+    WHERE client_token = c_token AND schedule_status = 'a'; 
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET notfound = 1; 
+  
+OPEN cur1; 
+FETCH cur1 INTO s_id; 
+IF s_id is null THEN
+    SET v_flag = -1; 
+ELSE
+    SET v_flag = 0;
+    INSERT INTO executions(
+        script_name,
+        execution_result,
+        schedule_id
+      )
+    VALUES(ex_script, ex_result, s_id); 
+END IF;
+CLOSE cur1;
+SELECT v_flag;
+END$$
+
+DELIMITER ;
+```
