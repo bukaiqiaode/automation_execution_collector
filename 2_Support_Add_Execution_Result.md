@@ -121,3 +121,6 @@ def execution_result_add():
         #may be an attack, ignore
         return ''
 ```
+
+
+Document about using stored procedure with Python/MySQL: https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-callproc.html
