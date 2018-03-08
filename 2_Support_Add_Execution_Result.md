@@ -122,6 +122,32 @@ def execution_result_add():
         return ''
 ```
 
-
+## Spring boot controller to post submit request to Python server
+```java
+	@RequestMapping(value = "/xxx/result/add", method = RequestMethod.POST)
+	public Greeting addResult(
+			@RequestParam(value = "xxx", defaultValue = "World")String token,
+			@RequestParam(value = "yyy", defaultValue = "World")String script,
+			@RequestParam(value = "zzz", defaultValue = "World")String result
+			) {
+		String result_s = "NA";
+		
+		char c = result.charAt(0);
+		if( token.equals("foxtel_beijing_pc") && 
+				(!script.contains("`")) && (!script.contains(" ")) && 
+				result.length() == 1 && (c >= 'a' && c <= 'z'))
+		{
+			String url = "http://aaa.bbb.ccc.ddd:eee/xxx/result/add";
+			String data = "xxx=" + token + "&yyy=" + script + "&zzz=" + result;
+			
+			result_s = this.httpPost(url, data);			
+		}
+		
+		return new xxx(
+				counter.incrementAndGet(), 
+				result_s
+				);
+	}   
+```
 ## References
 - Using stored procedure with Python/MySQL: https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-callproc.html
