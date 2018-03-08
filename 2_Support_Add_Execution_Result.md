@@ -8,7 +8,7 @@ So we get the following status of an execution:
 - Error: unexpected exception occurs during the execution.
 
 We need to know **when** the result is submitted.
-Below is the information we needed for an execution result record:
+## Information we needed for an execution result record
 - ID: primary key
 - Name: name of the test
 - Result: execution result. 'a'=Initial, 'b'=Pass, 'c'='Fail, 'd'=Block, 'e'=Error, ....
@@ -16,7 +16,7 @@ Below is the information we needed for an execution result record:
 - Submitted_time: when this record is submitted. Generally it means when the execution of this test is finished.
 - Started_time: Start time of the execution. Generally it means when the test is started to run.
 
-From the above schema, we can draw the below table definition.
+## Table schema for execution results
 ```mysql
 CREATE TABLE `executions` (
   `execution_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -32,7 +32,7 @@ CREATE TABLE `executions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ```
 
-We also need a stored-procedure to insert records of execution results.
+## Stored procedure to submit execution results into database
 ```mysql
 DELIMITER $$
 
@@ -123,4 +123,5 @@ def execution_result_add():
 ```
 
 
-Document about using stored procedure with Python/MySQL: https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-callproc.html
+## References
+- Using stored procedure with Python/MySQL: https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-callproc.html
