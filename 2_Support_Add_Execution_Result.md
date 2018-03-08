@@ -143,7 +143,7 @@ def execution_result_add():
 			result_s = this.httpPost(url, data);			
 		}
 		
-		return new xxx(
+		return new Greeting(
 				counter.incrementAndGet(), 
 				result_s
 				);
