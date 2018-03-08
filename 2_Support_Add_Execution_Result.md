@@ -26,7 +26,8 @@ CREATE TABLE `executions` (
   `started_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `submitted_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-   CONSTRAINT `executions_ibfk_1` FOREIGN KEY (`schedule_id`) REFERENCES `schedule` (`schedule_id`) ON DELETE CASCADE,
+   CONSTRAINT `executions_ibfk_1` FOREIGN KEY (`schedule_id`) 
+   REFERENCES `schedule` (`schedule_id`) ON DELETE CASCADE,
   PRIMARY KEY (`execution_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 ```
