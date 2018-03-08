@@ -2,7 +2,7 @@ To help us to know the start/end time of each schedule, timestamps are used. One
 
 - ID: primary key, automatic increasing
 - Name: name of the schedule, GUID
-- Status: flag the status of the schedule
+- Status: flag the status of the schedule. 'a'=open, 'b'=closed, ....
 - Created time: timestamp
 - last_modify_time: timestamp
 - client_token: to identify the owner of this schedule
