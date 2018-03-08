@@ -73,7 +73,7 @@ END$$
 DELIMITER ;
 ```
 
-Then we can submit execution results from Python server
+## Submit execution results from Python server
 ```python
 @bottle.route('/xxx/result/add', method= ['GET', 'POST'])
 def execution_result_add():
